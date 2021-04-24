@@ -51,9 +51,9 @@ object EsWriter extends EsClient with EsConf {
   ).await
   """
 
-  for (i <- 0 to 1) {
+  for (i <- ls_g.indices) {
       var bulk_seq = Seq[BulkCompatibleRequest]()
-      for ( j <- 0 to 2){
+      for ( j <- ls_g(i).indices){
           bulk_seq = bulk_seq :+ (indexInto("model_outputs") fieldValues (
             SimpleFieldValue("id", ls_g(i)(j)("id").toInt),
             SimpleFieldValue("given_label",ls_g(i)(j)("given_label")),
@@ -65,8 +65,8 @@ object EsWriter extends EsClient with EsConf {
             SimpleFieldValue("model3_B",ls_g(i)(j)("model3_B").toFloat)//,
           ))
       }
-      println("sa")
-      client.execute(bulk(bulk_seq))
+      client.execute(bulk(bulk_seq)).await
+      Thread.sleep(1000)
   }
 
 
