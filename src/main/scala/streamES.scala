@@ -36,7 +36,7 @@ object streamES extends App {
     .readStream
     .option("sep", ";").schema(userSchema)   // Specify schema of the csv files
     .option("rowsPerSecond", 1000)
-    .csv("/Users/akif/IdeaProjects/ElasticSearch-Scala/src/main/resources/tazi-se-interview-project-data.csv")    // Equivalent to format("csv").load("/path/to/directory")
+    .csv("/Users/akif/IdeaProjects/ElasticSearch-Scala/src/main/resources/project-data.csv")    // Equivalent to format("csv").load("/path/to/directory")
 
   csvDF.writeStream
     .option("checkpointLocation", "/save/location")
