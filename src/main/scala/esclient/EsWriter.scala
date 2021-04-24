@@ -1,9 +1,10 @@
 package esclient
-import com.sksamuel.elastic4s.fields.{FloatField, IntegerField, TextField}
+import com.sksamuel.elastic4s.fields.{IntegerField, LongField, TextField}
 import com.sksamuel.elastic4s.ElasticDsl.{indexInto, _}
 import com.sksamuel.elastic4s._
 import org.elasticsearch.common.xcontent.XContentBuilder
 
+import scala.concurrent.duration._
 import java.util.Date
 import java.text.SimpleDateFormat
 import com.github.tototoshi.csv._
@@ -20,12 +21,12 @@ object EsWriter extends EsClient with EsConf {
       properties(
         IntegerField("id"),
         TextField("given_label"),
-        FloatField("model1_A"),
-        FloatField("model1_B"),
-        FloatField("model2_A"),
-        FloatField("model2_B"),
-        FloatField("model3_A"),
-        FloatField("model3_B")
+        LongField("model1_A"),
+        LongField("model1_B"),
+        LongField("model2_A"),
+        LongField("model2_B"),
+        LongField("model3_A"),
+        LongField("model3_B")
       )
     )
   }.await
@@ -57,12 +58,12 @@ object EsWriter extends EsClient with EsConf {
           bulk_seq = bulk_seq :+ (indexInto("model_outputs") fieldValues (
             SimpleFieldValue("id", ls_g(i)(j)("id").toInt),
             SimpleFieldValue("given_label",ls_g(i)(j)("given_label")),
-            SimpleFieldValue("model1_A",ls_g(i)(j)("model1_A").toFloat),
-            SimpleFieldValue("model1_B",ls_g(i)(j)("model1_B").toFloat),
-            SimpleFieldValue("model2_A",ls_g(i)(j)("model2_A").toFloat),
-            SimpleFieldValue("model2_B",ls_g(i)(j)("model2_B").toFloat),
-            SimpleFieldValue("model3_A",ls_g(i)(j)("model3_A").toFloat),
-            SimpleFieldValue("model3_B",ls_g(i)(j)("model3_B").toFloat)//,
+            SimpleFieldValue("model1_A",ls_g(i)(j)("model1_A").toLong),
+            SimpleFieldValue("model1_B",ls_g(i)(j)("model1_B").toLong),
+            SimpleFieldValue("model2_A",ls_g(i)(j)("model2_A").toLong),
+            SimpleFieldValue("model2_B",ls_g(i)(j)("model2_B").toLong),
+            SimpleFieldValue("model3_A",ls_g(i)(j)("model3_A").toLong),
+            SimpleFieldValue("model3_B",ls_g(i)(j)("model3_B").toLong)//,
           ))
       }
       client.execute(bulk(bulk_seq)).await
