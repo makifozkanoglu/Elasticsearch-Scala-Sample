@@ -30,7 +30,7 @@ object EsWriter extends EsClient with EsConf {
       )
     )
   }.await
-  lazy val path = "/Users/akif/IdeaProjects/ElasticSearch-Scala/src/main/resources/tazi-se-interview-project-data.csv"
+  lazy val path = "/Users/akif/IdeaProjects/ElasticSearch-Scala/src/main/resources/project-data.csv"
   val reader: CSVReader = CSVReader.open(new File(path))
 
   val ls: Seq[Map[String, String]] = reader.allWithHeaders()
