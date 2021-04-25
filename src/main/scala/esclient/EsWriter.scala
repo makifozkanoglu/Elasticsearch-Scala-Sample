@@ -14,7 +14,7 @@ import com.sksamuel.elastic4s.requests.indexes.IndexRequest
 
 import java.io._
 
-object EsWriter extends EsClient with EsConf {
+trait EsWriter extends EsClient with EsConf {
 
   client.execute {
     createIndex("model_outputs").mapping(
@@ -51,28 +51,29 @@ object EsWriter extends EsClient with EsConf {
     )
   ).await
   """
-
-  for (i <- ls_g.indices) {
+  def main() {
+    for (i <- ls_g.indices) {
       var bulk_seq = Seq[BulkCompatibleRequest]()
-      for ( j <- ls_g(i).indices){
-          bulk_seq = bulk_seq :+ (indexInto("model_outputs") fieldValues (
-            SimpleFieldValue("id", ls_g(i)(j)("id").toInt),
-            SimpleFieldValue("given_label",ls_g(i)(j)("given_label")),
-            SimpleFieldValue("model1_A",ls_g(i)(j)("model1_A").toFloat),
-            SimpleFieldValue("model1_B",ls_g(i)(j)("model1_B").toFloat),
-            SimpleFieldValue("model2_A",ls_g(i)(j)("model2_A").toFloat),
-            SimpleFieldValue("model2_B",ls_g(i)(j)("model2_B").toFloat),
-            SimpleFieldValue("model3_A",ls_g(i)(j)("model3_A").toFloat),
-            SimpleFieldValue("model3_B",ls_g(i)(j)("model3_B").toFloat)//,
-          ))
+      for (j <- ls_g(i).indices) {
+        bulk_seq = bulk_seq :+ (indexInto("model_outputs") fieldValues(
+          SimpleFieldValue("id", ls_g(i)(j)("id").toInt),
+          SimpleFieldValue("given_label", ls_g(i)(j)("given_label")),
+          SimpleFieldValue("model1_A", ls_g(i)(j)("model1_A").toFloat),
+          SimpleFieldValue("model1_B", ls_g(i)(j)("model1_B").toFloat),
+          SimpleFieldValue("model2_A", ls_g(i)(j)("model2_A").toFloat),
+          SimpleFieldValue("model2_B", ls_g(i)(j)("model2_B").toFloat),
+          SimpleFieldValue("model3_A", ls_g(i)(j)("model3_A").toFloat),
+          SimpleFieldValue("model3_B", ls_g(i)(j)("model3_B").toFloat) //,
+        ))
       }
       client.execute(bulk(bulk_seq)).await
       Thread.sleep(1000)
+    }
+
+
+    println("Closing client")
+    client.close()
   }
-
-
-  println("Closing client")
-  client.close()
 }
 
 

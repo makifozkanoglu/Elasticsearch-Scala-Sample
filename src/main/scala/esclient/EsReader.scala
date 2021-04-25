@@ -9,7 +9,7 @@ import com.sksamuel.elastic4s.requests.searches.SearchResponse
 import scala.util.Try
 
 
-object EsReader
+trait EsReader
   extends EsClient
     with EsConf {
 
@@ -115,28 +115,28 @@ object EsReader
     }
   }
   //////////////////////////////Main///////////////////////////
-  var state = 0
-  var _count: Int = get_count()
-  var idx = 1000
-  while (true){
-    _count = get_count()
-    Thread.sleep(100)
-    if (state==0 && _count>1000){
-      state = 1
-    } else if(_count > idx) {
-      val conf_matrix = get_confusion_matrix(idx)
-      idx += 1
-      client.execute(
-        indexInto("confusion_matrix") fieldValues(
-          SimpleFieldValue("A_A", conf_matrix("A_A")),
-          SimpleFieldValue("A_B", conf_matrix("A_B")),
-          SimpleFieldValue("B_A", conf_matrix("B_A")),
-          SimpleFieldValue("B_B", conf_matrix("B_B"))
-        )
-      ).await
-
+  def main() {
+    var state = 0
+    var idx = 1000
+    while (true){
+      val _count = get_count()
+      Thread.sleep(200)
+      if (state==0 && _count>1000){
+        state = 1
+      } else if(_count > idx) {
+        val conf_matrix = get_confusion_matrix(idx)
+        idx += 1
+        client.execute(
+          indexInto("confusion_matrix") fieldValues(
+            SimpleFieldValue("A_A", conf_matrix("A_A")),
+            SimpleFieldValue("A_B", conf_matrix("A_B")),
+            SimpleFieldValue("B_A", conf_matrix("B_A")),
+            SimpleFieldValue("B_B", conf_matrix("B_B"))
+          )
+        ).await
+      }
+      Thread.sleep(1000)
     }
-    Thread.sleep(1000)
+    client.close()
   }
-  client.close()
 }
