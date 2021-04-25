@@ -1,4 +1,4 @@
-### Useful links
+### Useful addresses
 http://localhost:9200/_nodes/stats?pretty
 http://127.0.0.1:9200/_cat/nodes?v&pretty
 http://localhost:9200/_cluster/state?pretty
