@@ -9,11 +9,7 @@ trait EsConf {
 
         lazy val elasticCluster: String = elasticConf.getString("elastic.cluster")
 
-        lazy val documentsElasticIndex: String = elasticConf.getString("elastic.documents-index")
-        lazy val documentsElasticDocType: String = elasticConf.getString("elastic.documents-doc-type")
-
-        lazy val offersElasticIndex: String = elasticConf.getString("elastic.offers-index")
-        lazy val offersElasticDocType: String = elasticConf.getString("elastic.offers-doc-type")
+        lazy val elasticNode: String = elasticConf.getString("elastic.nodes")//.split(",").toSeq.map(_.trim)
 
         lazy val elasticHosts: Seq[String] = elasticConf.getString("elastic.hosts").split(",").toSeq.map(_.trim)
         lazy val elasticPort: Int = elasticConf.getString("elastic.port").toInt

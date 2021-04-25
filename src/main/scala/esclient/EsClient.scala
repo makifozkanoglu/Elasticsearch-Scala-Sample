@@ -11,7 +11,7 @@ trait EsClient extends EsConf {
         System.setProperty("es.set.netty.runtime.available.processors", "false")
 
         lazy val settings: Settings = Settings.builder()
-                .put("cluster.name", elasticCluster).put("node.name","es0")//.put("client.transport.sniff", true)
+                .put("cluster.name", elasticCluster).put("node.name",elasticNode)//.put("client.transport.sniff", true)
                 .build()
 
         //val client = new PreBuiltTransportClient(settings)
