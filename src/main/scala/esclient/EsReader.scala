@@ -6,13 +6,7 @@ import com.sksamuel.elastic4s.requests.count.CountResponse
 import com.sksamuel.elastic4s.requests.searches.queries._
 import com.sksamuel.elastic4s.{Hit, HitReader, RequestFailure, RequestSuccess, Response, SimpleFieldValue}
 import com.sksamuel.elastic4s.requests.searches.SearchResponse
-
 import scala.util.Try
-
-
-
-
-
 
 
 object EsReader
